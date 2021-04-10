@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class FileManager {
+    //testing
     public static void main(String[] args){
         FileManager fileManager = new FileManager();
         ArrayList<StudentEnrolment> listOfEnrolments = new ArrayList<>();
@@ -19,8 +20,12 @@ public class FileManager {
         listOfEnrolments.forEach((enrol) -> {
             System.out.println(enrol);
         });
+
+        fileManager.createFile("test", listOfEnrolments);
     }
 
+    //public methods for usage
+    //////////////////////////
     public boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments){
         try{
             Scanner inputLine = new Scanner(new File(filename));
@@ -51,6 +56,31 @@ public class FileManager {
         return false;
     }
 
+    public boolean createFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments){
+        try {
+            PrintWriter output = new PrintWriter(filename + ".csv");
+
+            listOfEnrolments.forEach((enrol) -> {
+                //process all information of the student
+                Student student = enrol.getStudent();
+                output.print(student.getId() + "," + student.getName() + "," + Helper.getProperTime(student.getBirthdate()) + ",");
+
+                //process all information of the course
+                Course course = enrol.getCourse();
+                output.println(course.getId() + "," + course.getName() + "," + course.getNumberOfCredits());
+            });
+
+            output.close();
+            return true;
+        } catch (IOException ex){
+            System.out.println("file cannot be created for some reason.");
+        }
+
+        return false;
+    }
+
+
+    //////////////////////////
     private Student getStudentFromFile(Scanner input) throws ParseException{
         String id = input.next();
         String name = input.next();

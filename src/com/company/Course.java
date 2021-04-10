@@ -11,8 +11,30 @@ public class Course {
         this.numberOfCredits = numberOfCredits;
     }
 
+    //getters
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getNumberOfCredits() {
+        return numberOfCredits;
+    }
+
     @Override
     public String toString() {
         return "Course: " + this.id + ", " +this.name + ", " +this.numberOfCredits;
+    }
+
+    public boolean equals(Course course){
+        if (this.id.equals(course.getId())
+            && this.name.equals(course.getName())
+            && this.numberOfCredits == course.getNumberOfCredits())
+            return true;
+
+        return false;
     }
 }
