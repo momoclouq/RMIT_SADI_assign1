@@ -15,18 +15,27 @@ public class FileManager {
     public static void main(String[] args){
         FileManager fileManager = new FileManager();
         ArrayList<StudentEnrolment> listOfEnrolments = new ArrayList<>();
-        fileManager.processFile("default.csv", listOfEnrolments);
+        ArrayList<Student> listOfStudents = new ArrayList<>();
+        ArrayList<Course> listOfCourses = new ArrayList<>();
+        fileManager.processFile("default.csv", listOfEnrolments, listOfStudents, listOfCourses);
 
         listOfEnrolments.forEach((enrol) -> {
             System.out.println(enrol);
         });
 
-        fileManager.createFile("test", listOfEnrolments);
+        listOfStudents.forEach((student) -> {
+            System.out.println(student);
+        });
+
+        listOfCourses.forEach((course) -> {
+            System.out.println(course);
+        });
     }
 
     //public methods for usage
     //////////////////////////
-    public boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments){
+    public boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments,
+                               ArrayList<Student> listOfStudents, ArrayList<Course> listOfCourses){
         try{
             Scanner inputLine = new Scanner(new File(filename));
 
@@ -41,16 +50,16 @@ public class FileManager {
                 Course course = getCourseFromFile(input);
                 String semester = input.next();
 
+                listOfStudents.add(student);
+                listOfCourses.add(course);
                 listOfEnrolments.add(new StudentEnrolment(student, course, semester));
             }
 
             return true;
         } catch (IOException ex) {
-            System.out.println("File problem: File cannot be read");
-            ex.printStackTrace();
+            System.out.println("File problem: File cannot be read.");
         } catch (ParseException ex){
-            System.out.println("File problem: Date format not supported");
-            ex.printStackTrace();
+            System.out.println("File problem: Date format not supported or file corrupted.");
         }
 
         return false;
