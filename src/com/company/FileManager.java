@@ -5,18 +5,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class FileManager {
     //testing
     public static void main(String[] args){
         FileManager fileManager = new FileManager();
         ArrayList<StudentEnrolment> listOfEnrolments = new ArrayList<>();
-        ArrayList<Student> listOfStudents = new ArrayList<>();
-        ArrayList<Course> listOfCourses = new ArrayList<>();
+        HashSet<Student> listOfStudents = new HashSet<>();
+        HashSet<Course> listOfCourses = new HashSet<>();
         fileManager.processFile("default.csv", listOfEnrolments, listOfStudents, listOfCourses);
 
         listOfEnrolments.forEach((enrol) -> {
@@ -35,7 +32,7 @@ public class FileManager {
     //public methods for usage
     //////////////////////////
     public boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments,
-                               ArrayList<Student> listOfStudents, ArrayList<Course> listOfCourses){
+                               HashSet<Student> listOfStudents, HashSet<Course> listOfCourses){
         try{
             Scanner inputLine = new Scanner(new File(filename));
 

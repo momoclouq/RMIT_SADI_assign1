@@ -29,11 +29,9 @@ public class StudentEnrolment {
         return "Enrol: " + this.student + " - " + this.course + " - " + this.semester;
     }
 
-    public boolean equals(StudentEnrolment enrol){
-        if (this.student.equals(enrol.getStudent())
-                && this.course.equals(enrol.getCourse())
-                && this.semester.equals(enrol.getSemester()))
-            return true;
-        return false;
+    public boolean checkEqual(String studentId, String courseId, String semester){
+        return this.getStudent().getId().equals(studentId)
+                && this.getCourse().getId().equals(courseId)
+                && this.getSemester().equals(semester);
     }
 }

@@ -1,14 +1,11 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ListIterator;
-import java.util.Scanner;
+import java.util.*;
 
 public class ProgramManager implements StudentEnrolmentManager{
     private ArrayList<StudentEnrolment> listOfEnrolments;
-    private ArrayList<Student> listOfStudents;
-    private ArrayList<Course> listOfCourses;
+    private HashSet<Student> listOfStudents;
+    private HashSet<Course> listOfCourses;
 
     public ProgramManager(){
         //initialize the manager
@@ -22,11 +19,9 @@ public class ProgramManager implements StudentEnrolmentManager{
         StudentEnrolment tempEnrol = getOne(studentId, courseId, semester);
 
         if (tempEnrol == null){
-            Student student = findStudent(studentId);
-            Course course = findCourse(courseId);
-
-            if (student != null && course != null) {
-                listOfEnrolments.add(new StudentEnrolment(student, course, semester));
+            StudentEnrolment output = createEnrolment(studentId, courseId, semester);
+            if (output != null) {
+                listOfEnrolments.add(output);
                 return true;
             }
         }
@@ -43,9 +38,7 @@ public class ProgramManager implements StudentEnrolmentManager{
 
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
-            if (currentEnrol.getStudent().getId().equals(oldStudentId)
-            && currentEnrol.getCourse().getId().equals(oldCourseId)
-            && currentEnrol.getSemester().equals(oldSemester)){
+            if (currentEnrol.checkEqual(oldStudentId, oldCourseId, oldSemester)){
                 listIterator.set(newEnrol);
             }
         }
@@ -59,9 +52,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         ListIterator listIterator = listOfEnrolments.listIterator();
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
-            if (currentEnrol.getStudent().getId().equals(studentId)
-                    && currentEnrol.getCourse().getId().equals(courseId)
-                    && currentEnrol.getSemester().equals(semester)){
+            if (currentEnrol.checkEqual(studentId, courseId, semester)){
                 listIterator.remove();
                 return true;
             }
@@ -75,9 +66,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         Iterator iterator = listOfEnrolments.iterator();
         while(iterator.hasNext()){
             StudentEnrolment enrol = (StudentEnrolment) iterator.next();
-            if (enrol.getStudent().getId().equals(studentId)
-            && enrol.getCourse().getId().equals(courseId)
-            && enrol.getSemester().equals(semester))
+            if (enrol.checkEqual(studentId, courseId, semester))
                 return enrol;
         }
 
@@ -89,7 +78,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         return listOfEnrolments;
     }
 
-    //core methods minor
+    //core minor methods
     private Student findStudent(String studentId){
         Iterator iterator = listOfStudents.iterator();
         while (iterator.hasNext()){
@@ -111,20 +100,32 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     private StudentEnrolment createEnrolment(String studentId, String courseId, String semester){
+        Student student = findStudent(studentId);
+        Course course = findCourse(courseId);
 
+        if (student != null && course != null){
+            return new StudentEnrolment(student, course, semester);
+        }
+
+        return null;
     }
 
     //sub functions
     private void resetList(){
         this.listOfEnrolments = new ArrayList<>();
-        this.listOfCourses = new ArrayList<>();
-        this.listOfStudents = new ArrayList<>();
+        this.listOfCourses = new HashSet<>();
+        this.listOfStudents = new HashSet<>();
+    }
+
+    private void line(){
+        System.out.println("");
+        System.out.println("--------------------------------------");
     }
 
     private void fewFirstWords(){
-        System.out.println("");
-        System.out.println("--------------------------------------");
         System.out.println("Enter \"-1\" to end the program.");
+        System.out.println("Enter \"0\" to return to the main menu.");
+        System.out.println("");
     }
 
 
@@ -153,6 +154,7 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     private void mainMenuScreen(){
+        line();
         fewFirstWords();
         System.out.println("Main menu");
         System.out.println("Options: ");
@@ -165,6 +167,7 @@ public class ProgramManager implements StudentEnrolmentManager{
 
         //navigation
         switch(userChoice){
+            case 0: mainMenuScreen(); break;
             case 1: crudEnrolMainScreen(); break;
             case 2: enrol1_1Screen();  break;
             case 3: update1_1Screen(); break;
@@ -175,13 +178,14 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     private void endScreen(){
-        fewFirstWords();
+        line();
         System.out.println("program ended!");
         System.out.println("Thank you for using the system");
         System.exit(1);
     }
 
     private void crudEnrolMainScreen(){
+        line();
         fewFirstWords();
         System.out.println("CRUD operations menu");
         System.out.println("1. add a new enrolment. ");
@@ -192,6 +196,7 @@ public class ProgramManager implements StudentEnrolmentManager{
 
         //navigation
         switch(userChoice){
+            case 0: mainMenuScreen(); break;
             case 1: crudEnrol_addScreen(); break;
             case 2: crudEnrol_updateScreen();  break;
             case 3: crudEnrol_deleteScreen(); break;
@@ -201,24 +206,59 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     private void crudEnrol_addScreen(){
-        fewFirstWords();
+        line();
+        System.out.println("Add a new enrolment menu.");
+        System.out.println("Please enter all valid enrolment information.");
         String studentId = Input.getStudentId();
         String courseId = Input.getCourseId();
         String semester = Input.getSemester();
 
+        if(add(studentId, courseId, semester))
+            System.out.println("Success: " + studentId + " has enrolled for course "
+                    + courseId + " for semester " + semester);
 
+        crudEnrolMainScreen();
     }
 
-    private String crudEnrol_deleteScreen(){
-        return "";
+    private void crudEnrol_deleteScreen(){
+        line();
+        System.out.println("Delete an enrolment menu.");
+        System.out.println("Please enter all enrolment information for deletion.");
+        String studentId = Input.getStudentId();
+        String courseId = Input.getCourseId();
+        String semester = Input.getSemester();
+
+        if (delete(studentId, courseId, semester))
+            System.out.println("Success: Enrolment for " + studentId + " for course "
+                    + courseId + " for semester " + semester + " has been deleted.");
+
+        crudEnrolMainScreen();
     }
 
-    private String crudEnrol_updateScreen(){
-        return "";
+    private void crudEnrol_updateScreen(){
+        line();
+        System.out.println("Update an enrolment menu.");
+        System.out.println("Please enter the old enrolment information.");
+        String oldStudentId = Input.getStudentId();
+        String oldCourseId = Input.getCourseId();
+        String oldSemester = Input.getSemester();
+
+        System.out.println("Please enter the new enrolment information.");
+        String newStudentId = Input.getStudentId();
+        String newCourseId = Input.getCourseId();
+        String newSemester = Input.getSemester();
+
+        if (update(oldStudentId, oldCourseId, oldSemester, newStudentId, newCourseId, newSemester)){
+            System.out.println("Success: Enrolment for " + oldStudentId + " for course "
+                    + oldCourseId + " for semester " + oldSemester + " has been updated.");
+        }
+
+        crudEnrolMainScreen();
     }
 
-    private String enrol1_1Screen(){
-        return "";
+    private void enrol1_1Screen(){
+        line();
+
     }
 
     private String update1_1Screen(){
