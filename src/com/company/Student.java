@@ -29,6 +29,10 @@ public class Student {
         return birthdate;
     }
 
+    public ArrayList<StudentEnrolment> getAllEnrolments(){
+        return allEnrolments;
+    }
+
     @Override
     public String toString() {
         return "(" + this.id + ", " + this.name + ", " + Helper.getProperTime(this.birthdate) + ") ";

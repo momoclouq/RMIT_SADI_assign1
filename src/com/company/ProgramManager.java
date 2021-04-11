@@ -258,26 +258,113 @@ public class ProgramManager implements StudentEnrolmentManager{
 
     private void enrol1_1Screen(){
         line();
+        System.out.println("Enrol a student for 1 semester menu.");
+        System.out.println("Please enter all information.");
 
+        ArrayList<String> listOfStudentIds = Input.getMultipleStudentId();
+        ArrayList<String> listOfCourseIds = Input.getMultipleCourseId();
+        String semester = Input.getSemester();
+
+        System.out.println("Processing!");
+        listOfStudentIds.forEach((studentId) -> {
+            listOfCourseIds.forEach((courseId) -> {
+                if (!add(studentId, courseId, semester))
+                    System.out.println("Failed enrolment for: " + studentId + "-" + courseId + "-" + semester);
+            });
+        });
+
+        mainMenuScreen();
     }
 
-    private String update1_1Screen(){
-        return "";
+    private void update1_1Screen(){
+        line();
+        System.out.println("Enrol a student for 1 semester menu.");
+        System.out.println("Please enter all information.");
+
+        ArrayList<String> listOfStudentIds = Input.getMultipleStudentId();
+        ArrayList<String> listOfCourseIds = Input.getMultipleCourseId();
+        String semester = Input.getSemester();
+
+        System.out.println("Processing!");
+        listOfStudentIds.forEach((studentId) -> {
+            listOfCourseIds.forEach((courseId) -> {
+                if (!add(studentId, courseId, semester))
+                    System.out.println("Failed enrolment for: " + studentId + "-" + courseId + "-" + semester);
+            });
+        });
+
+        mainMenuScreen();
     }
 
-    private String printMainScreen(){
-        return "";
+    private void printMainScreen(){
+        line();
+        fewFirstWords();
+        System.out.println("Advance printing operations menu");
+        System.out.println("1. print all courses of a student in 1 semester. ");
+        System.out.println("2. print all students of a course in 1 semester. ");
+        System.out.println("3. print all courses offered in 1 semester");
+
+        int userChoice = Input.getInputNav(3);
+
+        //navigation
+        switch(userChoice){
+            case 0: mainMenuScreen(); break;
+            case 1: printAllCourse1StudentScreen(); break;
+            case 2: printAllStudent1CourseScreen();  break;
+            case 3: printAllCourse1SemScreen(); break;
+            case -1: endScreen(); break;
+            default: break;
+        }
     }
 
-    private String printAllCourse1StudentScreen(){
-        return "";
+    private void printAllCourse1StudentScreen(){
+        line();
+        System.out.println("All courses of 1 student in 1 semester");
+
+        String studentId = Input.getStudentId();
+        String semester = Input.getSemester();
+
+        Student student = findStudent(studentId);
+        if (student == null) System.out.println("Student does not exist");
+        else {
+            ArrayList<StudentEnrolment> allStudentEnrolment = student.getAllEnrolments();
+            allStudentEnrolment.forEach((enrol) -> {
+                if (enrol.getSemester().equals(semester)) System.out.println("Course found: " + enrol.getCourse());
+            });
+        }
+
+        printMainScreen();
     }
 
-    private String printAllStudent1CourseScreen(){
-        return "";
+    private void printAllStudent1CourseScreen(){
+        line();
+        System.out.println("All students of 1 course in 1 semester:");
+
+        String courseId = Input.getCourseId();
+        String semester = Input.getSemester();
+
+        Course course = findCourse(courseId);
+        if (course == null) System.out.println("Course does not exist");
+        else {
+            ArrayList<StudentEnrolment> allStudentEnrolment = course.getAllEnrolments();
+            allStudentEnrolment.forEach((enrol) -> {
+                if (enrol.getSemester().equals(semester)) System.out.println("Student found: " + enrol.getStudent());
+            });
+        }
+
+        printMainScreen();
     }
 
-    private String printAllCourse1SemScreen(){
-        return "";
+    private void printAllCourse1SemScreen(){
+        line();
+        System.out.println("All courses in 1 semester:");
+
+        String semester = Input.getSemester();
+
+        listOfEnrolments.forEach((enrol) -> {
+            if (enrol.getSemester().equals(semester)) System.out.println("Course found: " + enrol.getCourse());
+        });
+
+        printMainScreen();
     }
 }

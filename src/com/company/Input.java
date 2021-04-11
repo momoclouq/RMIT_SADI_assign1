@@ -2,6 +2,7 @@ package com.company;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
@@ -38,6 +39,22 @@ public class Input {
         }
     }
 
+    public static ArrayList<String> getMultipleStudentId(){
+        Scanner input = new Scanner(System.in);
+        ArrayList<String> listOfIds = new ArrayList<>();
+        System.out.println("Enter all the student ids, enter \"end\" to stop.");
+        System.out.println("Student id starts with S.");
+
+        while (true){
+            System.out.print("student ID: ");
+            String id = input.nextLine().trim();
+            if (Character.toLowerCase(id.charAt(0)) == 'S') listOfIds.add(id);
+            else if (id.equals("end")) break;
+            else System.out.print("Wrong student id, enter again: ");
+        }
+
+        return listOfIds;
+    }
     public static String getStudentName(){
         Scanner input = new Scanner(System.in);
         System.out.print("Enter student name: ");
@@ -67,6 +84,19 @@ public class Input {
         System.out.print("Enter course id: ");
 
         return input.nextLine().trim();
+    }
+
+    public static ArrayList<String> getMultipleCourseId(){
+        ArrayList<String> listOfIds = new ArrayList<>();
+        System.out.println("Enter all the course ids, enter \"end\" to stop.");
+
+        while (true){
+            String id = getCourseId();
+            if (id.equals("end")) break;
+            else listOfIds.add(id);
+        }
+
+        return listOfIds;
     }
 
     public static String getCourseName(){

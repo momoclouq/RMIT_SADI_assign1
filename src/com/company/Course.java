@@ -28,6 +28,10 @@ public class Course {
         return numberOfCredits;
     }
 
+    public ArrayList<StudentEnrolment> getAllEnrolments(){
+        return allEnrolments;
+    }
+
     @Override
     public String toString() {
         return "Course: " + this.id + ", " +this.name + ", " +this.numberOfCredits;
