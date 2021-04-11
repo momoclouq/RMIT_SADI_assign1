@@ -1,14 +1,18 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class Course {
     private String id;
     private String name;
     private int numberOfCredits;
+    private ArrayList<StudentEnrolment> allEnrolments;
 
     public Course(String id, String name, int numberOfCredits){
         this.id = id;
         this.name = name;
         this.numberOfCredits = numberOfCredits;
+        this.allEnrolments = new ArrayList<>();
     }
 
     //getters

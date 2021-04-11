@@ -1,16 +1,19 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Student {
     private String id;
     private String name;
     private Calendar birthdate;
+    private ArrayList<StudentEnrolment> allEnrolments;
 
     public Student(String id, String name, Calendar birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
+        this.allEnrolments = new ArrayList<>();
     }
 
     //getters
