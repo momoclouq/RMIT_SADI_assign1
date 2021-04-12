@@ -55,6 +55,7 @@ public class Input {
 
         return listOfIds;
     }
+
     public static String getStudentName(){
         Scanner input = new Scanner(System.in);
         System.out.print("Enter student name: ");

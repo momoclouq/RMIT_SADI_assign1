@@ -21,7 +21,11 @@ public class ProgramManager implements StudentEnrolmentManager{
         if (tempEnrol == null){
             StudentEnrolment output = createEnrolment(studentId, courseId, semester);
             if (output != null) {
+                Student student = findStudent(studentId);
+                Course course = findCourse(courseId);
                 listOfEnrolments.add(output);
+                student.getAllEnrolments().add(output);
+                course.getAllEnrolments().add(output);
                 return true;
             }
         }
@@ -32,10 +36,10 @@ public class ProgramManager implements StudentEnrolmentManager{
     public boolean update(String oldStudentId, String oldCourseId, String oldSemester,
                           String newStudentId, String newCourseId, String newSemester) {
         //check if enrol already exist and replace it with the new enrolment if true
-        ListIterator listIterator = listOfEnrolments.listIterator();
         StudentEnrolment newEnrol = createEnrolment(newStudentId, newCourseId, newSemester);
         if (newEnrol == null) return false;
 
+        ListIterator listIterator = listOfEnrolments.listIterator();
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
             if (currentEnrol.checkEqual(oldStudentId, oldCourseId, oldSemester)){
@@ -126,6 +130,20 @@ public class ProgramManager implements StudentEnrolmentManager{
         System.out.println("Enter \"-1\" to end the program.");
         System.out.println("Enter \"0\" to return to the main menu.");
         System.out.println("");
+    }
+
+    private boolean deleteWithCourse(String studentId, String semester){
+        String courseId = Input.getCourseId();
+
+        return delete(studentId, courseId, semester);
+    }
+
+    private boolean updateWithCourse(String studentId, String semester){
+        String oldCourseId = Input.getCourseId();
+        System.out.println("Enter new course ID now");
+        String newCourseId = Input.getCourseId();
+
+        return update(studentId, oldCourseId, semester, studentId, newCourseId, semester);
     }
 
 
@@ -278,20 +296,38 @@ public class ProgramManager implements StudentEnrolmentManager{
 
     private void update1_1Screen(){
         line();
-        System.out.println("Enrol a student for 1 semester menu.");
+        System.out.println("Update a student enrolment for 1 semester menu.");
         System.out.println("Please enter all information.");
 
-        ArrayList<String> listOfStudentIds = Input.getMultipleStudentId();
-        ArrayList<String> listOfCourseIds = Input.getMultipleCourseId();
+        String studentId = Input.getStudentId();
         String semester = Input.getSemester();
+        Student student = findStudent(studentId);
 
-        System.out.println("Processing!");
-        listOfStudentIds.forEach((studentId) -> {
-            listOfCourseIds.forEach((courseId) -> {
-                if (!add(studentId, courseId, semester))
-                    System.out.println("Failed enrolment for: " + studentId + "-" + courseId + "-" + semester);
+        if (student == null){
+            System.out.println("student does not exist");
+        } else {
+            ArrayList<StudentEnrolment> allEnrolments = student.getAllEnrolments();
+            System.out.println("List of all courses the student " + student.getId() + " enrolled in the semester " + semester + ": " );
+            allEnrolments.forEach((enrol) -> {
+                System.out.println(enrol);
             });
-        });
+
+            boolean stopCommand = false;
+
+            while (true){
+                System.out.println("Options (enter only the digit): (1. remove) (2. update)");
+                System.out.println("Enter \"0\" to stop the function");
+                int choice = Input.getInputNav(2);
+
+                switch(choice){
+                    case 1: deleteWithCourse(studentId, semester); break;
+                    case 2: updateWithCourse(studentId, semester); break;
+                    default: stopCommand = true; break;
+                }
+
+                if (stopCommand) break;
+            }
+        }
 
         mainMenuScreen();
     }
