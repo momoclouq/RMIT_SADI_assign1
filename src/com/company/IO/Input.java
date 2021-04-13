@@ -63,23 +63,6 @@ public class Input {
         return input.nextLine().trim();
     }
 
-    public static Calendar getStudentBirthDate(){
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter date (dd/mm/yyyy): ");
-        Calendar dateFormatted = Calendar.getInstance(); ;
-
-        while (true){
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                Date date = format.parse(input.nextLine().trim());
-                dateFormatted.setTime(date);
-                return dateFormatted;
-            } catch (ParseException ex){
-                System.out.print("wrong date format, enter again (dd/mm/yyyy): ");
-            }
-        }
-    }
-
     public static String getCourseId(){
         Scanner input = new Scanner(System.in);
         System.out.print("Enter course id: ");
@@ -98,32 +81,6 @@ public class Input {
         }
 
         return listOfIds;
-    }
-
-    public static String getCourseName(){
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter course id: ");
-
-        return input.nextLine().trim();
-    }
-
-    public static int getCourseCredit(){
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter course credit: ");
-
-        int output;
-
-        while (true){
-            String choice = input.nextLine().trim();
-
-            try {
-                output = Integer.parseInt(choice);
-                if (output >= 0) return output;
-                else System.out.print("Credit cannot be negative, enter again: ");
-            } catch (NumberFormatException ex){
-                System.out.print("Wrong credit value, enter again: ");
-            }
-        }
     }
 
     public static String getSemester(){

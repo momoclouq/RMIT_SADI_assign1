@@ -25,10 +25,12 @@ public class FileManager {
                 Scanner input = new Scanner(line);
                 input.useDelimiter(",");
 
+                //get the student and course instance from the file
                 Student student = getStudentFromFile(input, listOfStudents);
                 Course course = getCourseFromFile(input, listOfCourses);
                 String semester = input.next();
 
+                //create the enrolment and add the enrolment to the lists
                 StudentEnrolment enrolment = new StudentEnrolment(student, course, semester);
                 student.getAllEnrolments().add(enrolment);
                 course.getAllEnrolments().add(enrolment);
@@ -74,8 +76,6 @@ public class FileManager {
         return false;
     }
 
-
-    //////////////////////////
     //private methods
     private static Student getStudentFromFile(Scanner input, HashSet<Student> listOfStudents) throws ParseException{
         String id = input.next();
