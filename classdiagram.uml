@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.company</OriginalElement>
+  <nodes>
+    <node x="896.937210648148" y="913.0">com.company.ProgramManager</node>
+    <node x="1202.9288194444446" y="709.5">com.company.testing</node>
+    <node x="698.5" y="652.5">com.company.StudentEnrolmentManager</node>
+    <node x="645.1597222222224" y="0.0">com.company.Helper</node>
+    <node x="523.6597222222224" y="128.0">com.company.model.Course</node>
+    <node x="1579.437210648148" y="608.0">com.company.IO.Input</node>
+    <node x="1020.937210648148" y="1614.0">com.company.Main</node>
+    <node x="1205.937210648148" y="379.0">com.company.model.StudentEnrolment</node>
+    <node x="1211.3559027777778" y="128.0">com.company.model.Student</node>
+    <node x="21.5" y="630.5">com.company.IO.FileManager</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.company.testing" target="com.company.model.Student" relationship="CREATE">
+      <point x="53.66666666666663" y="-15.0" />
+      <point x="1337.0954861111113" y="587.0" />
+      <point x="1536.437210648148" y="587.0" />
+      <point x="1536.437210648148" y="337.0" />
+      <point x="1446.6059027777778" y="337.0" />
+      <point x="1446.6059027777778" y="327.0" />
+      <point x="1411.9809027777778" y="327.0" />
+      <point x="40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.Course" relationship="DEPENDENCY">
+      <point x="-138.33333333333337" y="-325.5" />
+      <point x="966.1038773148147" y="882.0" />
+      <point x="11.0" y="882.0" />
+      <point x="11.0" y="347.0" />
+      <point x="687.3475115740744" y="347.0" />
+      <point x="687.3475115740744" y="327.0" />
+      <point x="644.0347222222224" y="327.0" />
+      <point x="-40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.model.Student" target="com.company.model.StudentEnrolment" relationship="TO_MANY">
+      <point x="-40.125" y="83.5" />
+      <point x="1331.7309027777778" y="317.0" />
+      <point x="1334.764178240741" y="317.0" />
+      <point x="1334.764178240741" y="347.0" />
+      <point x="1392.6038773148148" y="347.0" />
+      <point x="26.66666666666663" y="-83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.Course" relationship="TO_MANY">
+      <point x="-184.44444444444446" y="-325.5" />
+      <point x="919.9927662037036" y="892.0" />
+      <point x="0.0" y="892.0" />
+      <point x="0.0" y="357.0" />
+      <point x="125.74131944444457" y="357.0" />
+      <point x="125.74131944444457" y="327.0" />
+      <point x="563.7847222222224" y="327.0" />
+      <point x="-120.375" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.StudentEnrolment" relationship="TO_MANY">
+      <point x="46.111111111111114" y="-325.5" />
+      <point x="1150.5483217592591" y="862.0" />
+      <point x="1546.937210648148" y="862.0" />
+      <point x="1546.937210648148" y="577.0" />
+      <point x="1445.937210648148" y="577.0" />
+      <point x="80.0" y="83.5" />
+    </edge>
+    <edge source="com.company.testing" target="com.company.model.StudentEnrolment" relationship="CREATE">
+      <point x="-53.66666666666663" y="-15.0" />
+      <point x="1229.762152777778" y="587.0" />
+      <point x="998.2847222222224" y="587.0" />
+      <point x="998.2847222222224" y="567.0" />
+      <point x="1285.937210648148" y="567.0" />
+      <point x="-80.0" y="83.5" />
+    </edge>
+    <edge source="com.company.model.StudentEnrolment" target="com.company.model.Student" relationship="DEPENDENCY">
+      <point x="80.0" y="-83.5" />
+      <point x="1446.6059027777778" y="327.0" />
+      <point x="1411.9809027777778" y="327.0" />
+      <point x="40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.model.Student" target="com.company.model.StudentEnrolment" relationship="DEPENDENCY">
+      <point x="-120.375" y="83.5" />
+      <point x="1251.4809027777778" y="327.0" />
+      <point x="1293.9288194444446" y="327.0" />
+      <point x="1293.9288194444446" y="357.0" />
+      <point x="1339.2705439814813" y="357.0" />
+      <point x="-26.666666666666686" y="-83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.StudentEnrolmentManager" relationship="REALIZATION">
+      <point x="-46.111111111111114" y="-325.5" />
+      <point x="1058.326099537037" y="862.0" />
+      <point x="906.0" y="862.0" />
+      <point x="0.0" y="72.0" />
+    </edge>
+    <edge source="com.company.model.StudentEnrolment" target="com.company.model.Student" relationship="TO_ONE">
+      <point x="133.33333333333337" y="-83.5" />
+      <point x="1499.2705439814813" y="327.0" />
+      <point x="1481.7725694444443" y="327.0" />
+      <point x="1481.7725694444443" y="317.0" />
+      <point x="1492.2309027777778" y="317.0" />
+      <point x="120.375" y="83.5" />
+    </edge>
+    <edge source="com.company.IO.FileManager" target="com.company.model.Student" relationship="CREATE">
+      <point x="82.125" y="-94.0" />
+      <point x="432.125" y="587.0" />
+      <point x="335.93721064814804" y="587.0" />
+      <point x="335.93721064814804" y="337.0" />
+      <point x="1446.6059027777778" y="337.0" />
+      <point x="1446.6059027777778" y="327.0" />
+      <point x="1411.9809027777778" y="327.0" />
+      <point x="40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.IO.Input" relationship="DEPENDENCY">
+      <point x="184.44444444444446" y="-325.5" />
+      <point x="1288.8816550925926" y="892.0" />
+      <point x="1715.937210648148" y="892.0" />
+      <point x="0.0" y="116.5" />
+    </edge>
+    <edge source="com.company.Main" target="com.company.ProgramManager" relationship="CREATE">
+      <point x="0.0" y="-39.0" />
+      <point x="0.0" y="325.5" />
+    </edge>
+    <edge source="com.company.testing" target="com.company.model.Course" relationship="CREATE">
+      <point x="0.0" y="-15.0" />
+      <point x="1283.4288194444446" y="577.0" />
+      <point x="1195.437210648148" y="577.0" />
+      <point x="1195.437210648148" y="347.0" />
+      <point x="687.3475115740744" y="347.0" />
+      <point x="687.3475115740744" y="327.0" />
+      <point x="644.0347222222224" y="327.0" />
+      <point x="-40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.IO.FileManager" target="com.company.model.StudentEnrolment" relationship="CREATE">
+      <point x="246.375" y="-94.0" />
+      <point x="596.375" y="587.0" />
+      <point x="998.2847222222224" y="587.0" />
+      <point x="998.2847222222224" y="567.0" />
+      <point x="1285.937210648148" y="567.0" />
+      <point x="-80.0" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.StudentEnrolment" relationship="CREATE">
+      <point x="0.0" y="-325.5" />
+      <point x="1104.437210648148" y="892.0" />
+      <point x="1124.0" y="892.0" />
+      <point x="1124.0" y="587.0" />
+      <point x="998.2847222222224" y="587.0" />
+      <point x="998.2847222222224" y="567.0" />
+      <point x="1285.937210648148" y="567.0" />
+      <point x="-80.0" y="83.5" />
+    </edge>
+    <edge source="com.company.model.StudentEnrolment" target="com.company.model.Course" relationship="DEPENDENCY">
+      <point x="-80.0" y="-83.5" />
+      <point x="1285.937210648148" y="347.0" />
+      <point x="687.3475115740744" y="347.0" />
+      <point x="687.3475115740744" y="327.0" />
+      <point x="644.0347222222224" y="327.0" />
+      <point x="-40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.model.Course" target="com.company.model.StudentEnrolment" relationship="DEPENDENCY">
+      <point x="40.125" y="83.5" />
+      <point x="724.2847222222224" y="327.0" />
+      <point x="1293.9288194444446" y="327.0" />
+      <point x="1293.9288194444446" y="357.0" />
+      <point x="1339.2705439814813" y="357.0" />
+      <point x="-26.666666666666686" y="-83.5" />
+    </edge>
+    <edge source="com.company.model.StudentEnrolment" target="com.company.model.Course" relationship="TO_ONE">
+      <point x="-133.33333333333337" y="-83.5" />
+      <point x="1232.6038773148146" y="357.0" />
+      <point x="125.74131944444457" y="357.0" />
+      <point x="125.74131944444457" y="327.0" />
+      <point x="563.7847222222224" y="327.0" />
+      <point x="-120.375" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.Student" relationship="TO_MANY">
+      <point x="138.33333333333337" y="-325.5" />
+      <point x="1242.7705439814813" y="882.0" />
+      <point x="1568.937210648148" y="882.0" />
+      <point x="1568.937210648148" y="327.0" />
+      <point x="1481.7725694444443" y="327.0" />
+      <point x="1481.7725694444443" y="317.0" />
+      <point x="1492.2309027777778" y="317.0" />
+      <point x="120.375" y="83.5" />
+    </edge>
+    <edge source="com.company.model.Student" target="com.company.Helper" relationship="DEPENDENCY">
+      <point x="0.0" y="-83.5" />
+      <point x="1371.8559027777778" y="103.0" />
+      <point x="769.1597222222224" y="103.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="com.company.model.Course" target="com.company.model.StudentEnrolment" relationship="TO_MANY">
+      <point x="120.375" y="83.5" />
+      <point x="804.5347222222224" y="317.0" />
+      <point x="1334.764178240741" y="317.0" />
+      <point x="1334.764178240741" y="347.0" />
+      <point x="1392.6038773148148" y="347.0" />
+      <point x="26.66666666666663" y="-83.5" />
+    </edge>
+    <edge source="com.company.IO.FileManager" target="com.company.Helper" relationship="DEPENDENCY">
+      <point x="-246.375" y="-94.0" />
+      <point x="103.625" y="587.0" />
+      <point x="234.6597222222224" y="587.0" />
+      <point x="234.6597222222224" y="337.0" />
+      <point x="94.92881944444457" y="337.0" />
+      <point x="94.92881944444457" y="103.0" />
+      <point x="769.1597222222224" y="103.0" />
+      <point x="0.0" y="39.0" />
+    </edge>
+    <edge source="com.company.StudentEnrolmentManager" target="com.company.model.StudentEnrolment" relationship="DEPENDENCY">
+      <point x="0.0" y="-72.0" />
+      <point x="906.0" y="587.0" />
+      <point x="998.2847222222224" y="587.0" />
+      <point x="998.2847222222224" y="567.0" />
+      <point x="1285.937210648148" y="567.0" />
+      <point x="-80.0" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.model.Student" relationship="DEPENDENCY">
+      <point x="92.22222222222223" y="-325.5" />
+      <point x="1196.6594328703702" y="872.0" />
+      <point x="1557.937210648148" y="872.0" />
+      <point x="1557.937210648148" y="337.0" />
+      <point x="1446.6059027777778" y="337.0" />
+      <point x="1446.6059027777778" y="327.0" />
+      <point x="1411.9809027777778" y="327.0" />
+      <point x="40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.IO.FileManager" target="com.company.model.Course" relationship="CREATE">
+      <point x="-82.125" y="-94.0" />
+      <point x="267.875" y="587.0" />
+      <point x="324.93721064814804" y="587.0" />
+      <point x="324.93721064814804" y="347.0" />
+      <point x="687.3475115740744" y="347.0" />
+      <point x="687.3475115740744" y="327.0" />
+      <point x="644.0347222222224" y="327.0" />
+      <point x="-40.125" y="83.5" />
+    </edge>
+    <edge source="com.company.ProgramManager" target="com.company.IO.FileManager" relationship="DEPENDENCY">
+      <point x="-92.22222222222223" y="-325.5" />
+      <point x="1012.2149884259259" y="872.0" />
+      <point x="350.0" y="872.0" />
+      <point x="0.0" y="94.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic" zoom="0.3999999999999999" showDependencies="true" x="433.5000000000002" y="802.2500000000002" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
