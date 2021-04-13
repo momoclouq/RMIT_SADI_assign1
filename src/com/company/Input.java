@@ -19,7 +19,7 @@ public class Input {
 
             try {
                 output = Integer.parseInt(choice);
-                if (output == -1 || (output <= limit && output >= 1)) return output;
+                if (output == -1 || (output <= limit && output >= 0)) return output;
                 else System.out.print("Choice does not exist, enter again: ");
             } catch (NumberFormatException ex){
                 System.out.print("Wrong choice format, enter again: ");
@@ -34,7 +34,7 @@ public class Input {
         String output;
         while (true){
             output = input.nextLine().trim();
-            if (Character.toLowerCase(output.charAt(0)) == 'S') return output;
+            if (Character.toLowerCase(output.charAt(0)) == 's') return output;
             System.out.print("Wrong student id, enter again: ");
         }
     }
@@ -48,7 +48,7 @@ public class Input {
         while (true){
             System.out.print("student ID: ");
             String id = input.nextLine().trim();
-            if (Character.toLowerCase(id.charAt(0)) == 'S') listOfIds.add(id);
+            if (Character.toLowerCase(id.charAt(0)) == 's') listOfIds.add(id);
             else if (id.equals("end")) break;
             else System.out.print("Wrong student id, enter again: ");
         }
@@ -131,5 +131,20 @@ public class Input {
         System.out.print("Enter Semester: ");
 
         return input.nextLine().trim();
+    }
+
+    public static String getFilename(){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter filename (without .csv): ");
+        String output = input.nextLine().trim();
+
+        while (true){
+            if (output.contains(" ")) {
+                System.out.print("filename contains spaces, enter again: ");
+                output = input.nextLine().trim();
+            } else break;
+        }
+
+        return output;
     }
 }

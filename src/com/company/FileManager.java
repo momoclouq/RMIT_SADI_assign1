@@ -43,13 +43,16 @@ public class FileManager {
                 Scanner input = new Scanner(line);
                 input.useDelimiter(",");
 
-                Student student = getStudentFromFile(input);
-                Course course = getCourseFromFile(input);
+                Student student = getStudentFromFile(input, listOfStudents);
+                Course course = getCourseFromFile(input, listOfCourses);
                 String semester = input.next();
 
+                StudentEnrolment enrolment = new StudentEnrolment(student, course, semester);
+                student.getAllEnrolments().add(enrolment);
+                course.getAllEnrolments().add(enrolment);
                 listOfStudents.add(student);
                 listOfCourses.add(course);
-                listOfEnrolments.add(new StudentEnrolment(student, course, semester));
+                listOfEnrolments.add(enrolment);
             }
 
             return true;
@@ -87,10 +90,13 @@ public class FileManager {
 
 
     //////////////////////////
-    private Student getStudentFromFile(Scanner input) throws ParseException{
+    private Student getStudentFromFile(Scanner input, HashSet<Student> listOfStudents) throws ParseException{
         String id = input.next();
         String name = input.next();
         String dateUnFormatted = input.next();
+
+        Student foundStudent = findStudent(id, listOfStudents);
+        if (foundStudent != null) return foundStudent;
 
         //process date from string dd/MM/yyyy
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -101,11 +107,34 @@ public class FileManager {
         return new Student(id, name, dateFormatted);
     }
 
-    private Course getCourseFromFile(Scanner input){
+    private Course getCourseFromFile(Scanner input, HashSet<Course> listOfCourses){
         String id = input.next();
         String name = input.next();
         int credit = input.nextInt();
 
+        Course foundCourse = findCourse(id, listOfCourses);
+        if (foundCourse != null) return foundCourse;
+
         return new Course(id, name, credit);
+    }
+
+    private Student findStudent(String studentId, HashSet<Student> listOfStudents){
+        Iterator iterator = listOfStudents.iterator();
+        while (iterator.hasNext()){
+            Student student = (Student) iterator.next();
+            if (student.getId().equals(studentId)) return student;
+        }
+
+        return null;
+    }
+
+    private Course findCourse(String courseId, HashSet<Course> listOfCourses){
+        Iterator iterator = listOfCourses.iterator();
+        while (iterator.hasNext()){
+            Course course = (Course) iterator.next();
+            if (course.getId().equals(courseId)) return course;
+        }
+
+        return null;
     }
 }

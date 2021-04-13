@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.File;
 import java.util.*;
 
 public class ProgramManager implements StudentEnrolmentManager{
@@ -43,6 +44,10 @@ public class ProgramManager implements StudentEnrolmentManager{
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
             if (currentEnrol.checkEqual(oldStudentId, oldCourseId, oldSemester)){
+                ArrayList<StudentEnrolment> allEnrolStudent = findStudent(oldStudentId).getAllEnrolments();
+                ArrayList<StudentEnrolment> allEnrolCourse  = findCourse(oldCourseId).getAllEnrolments();
+                allEnrolStudent.set(allEnrolStudent.indexOf(currentEnrol), newEnrol);
+                allEnrolCourse.set(allEnrolCourse.indexOf(currentEnrol), newEnrol);
                 listIterator.set(newEnrol);
             }
         }
@@ -57,6 +62,10 @@ public class ProgramManager implements StudentEnrolmentManager{
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
             if (currentEnrol.checkEqual(studentId, courseId, semester)){
+                Student student = findStudent(studentId);
+                Course course = findCourse(courseId);
+                student.getAllEnrolments().remove(currentEnrol);
+                course.getAllEnrolments().remove(currentEnrol);
                 listIterator.remove();
                 return true;
             }
@@ -180,8 +189,9 @@ public class ProgramManager implements StudentEnrolmentManager{
         System.out.println("2. Enrol a student for 1 semester. ");
         System.out.println("3. Update the enrolment of a student for 1 semester. ");
         System.out.println("4. Advance printing options. ");
+        System.out.println("5. Export to a new csv file. ");
 
-        int userChoice = Input.getInputNav(4);
+        int userChoice = Input.getInputNav(5);
 
         //navigation
         switch(userChoice){
@@ -190,6 +200,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             case 2: enrol1_1Screen();  break;
             case 3: update1_1Screen(); break;
             case 4: printMainScreen(); break;
+            case 5: exportToCSVScreen(); break;
             case -1: endScreen(); break;
             default: break;
         }
@@ -234,6 +245,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         if(add(studentId, courseId, semester))
             System.out.println("Success: " + studentId + " has enrolled for course "
                     + courseId + " for semester " + semester);
+        else System.out.println("Failure: enrolment cannot be created");
 
         crudEnrolMainScreen();
     }
@@ -249,6 +261,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         if (delete(studentId, courseId, semester))
             System.out.println("Success: Enrolment for " + studentId + " for course "
                     + courseId + " for semester " + semester + " has been deleted.");
+        else System.out.println("Failure: enrolment does not exist for deleting");
 
         crudEnrolMainScreen();
     }
@@ -269,6 +282,8 @@ public class ProgramManager implements StudentEnrolmentManager{
         if (update(oldStudentId, oldCourseId, oldSemester, newStudentId, newCourseId, newSemester)){
             System.out.println("Success: Enrolment for " + oldStudentId + " for course "
                     + oldCourseId + " for semester " + oldSemester + " has been updated.");
+        } else {
+            System.out.println("Failure: Update failed, course may not exist or new course add is wrong");
         }
 
         crudEnrolMainScreen();
@@ -290,6 +305,8 @@ public class ProgramManager implements StudentEnrolmentManager{
                     System.out.println("Failed enrolment for: " + studentId + "-" + courseId + "-" + semester);
             });
         });
+        System.out.println("All enrolled");
+
 
         mainMenuScreen();
     }
@@ -363,8 +380,10 @@ public class ProgramManager implements StudentEnrolmentManager{
         Student student = findStudent(studentId);
         if (student == null) System.out.println("Student does not exist");
         else {
+            System.out.println("All courses found: ");
             ArrayList<StudentEnrolment> allStudentEnrolment = student.getAllEnrolments();
             allStudentEnrolment.forEach((enrol) -> {
+                System.out.println("Course: " + enrol.getCourse());
                 if (enrol.getSemester().equals(semester)) System.out.println("Course found: " + enrol.getCourse());
             });
         }
@@ -397,10 +416,27 @@ public class ProgramManager implements StudentEnrolmentManager{
 
         String semester = Input.getSemester();
 
+        HashSet<Course> coursesOffered = new HashSet<>();
         listOfEnrolments.forEach((enrol) -> {
-            if (enrol.getSemester().equals(semester)) System.out.println("Course found: " + enrol.getCourse());
+            if (enrol.getSemester().equals(semester)) coursesOffered.add(enrol.getCourse());
+        });
+
+        if (coursesOffered.size() == 0) System.out.println("No courses found");
+        coursesOffered.forEach((course) -> {
+            System.out.println("Course found: " + course);
         });
 
         printMainScreen();
+    }
+
+    private void exportToCSVScreen(){
+        line();
+        System.out.println("Export to csv file menu");
+        String filename = Input.getFilename();
+
+        FileManager fileManager = new FileManager();
+        if (fileManager.createFile(filename, listOfEnrolments)) System.out.println("file created.");
+
+        mainMenuScreen();
     }
 }
