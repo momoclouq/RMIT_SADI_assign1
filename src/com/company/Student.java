@@ -37,12 +37,4 @@ public class Student {
     public String toString() {
         return "(" + this.id + ", " + this.name + ", " + Helper.getProperTime(this.birthdate) + ") ";
     }
-
-    public boolean equals(Student student) {
-        if (this.id.equals(student.getId())
-                && this.name.equals(student.getName())
-                && this.birthdate.equals(student.getBirthdate()))
-            return true;
-        return false;
-    }
 }

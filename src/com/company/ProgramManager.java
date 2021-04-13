@@ -37,18 +37,15 @@ public class ProgramManager implements StudentEnrolmentManager{
     public boolean update(String oldStudentId, String oldCourseId, String oldSemester,
                           String newStudentId, String newCourseId, String newSemester) {
         //check if enrol already exist and replace it with the new enrolment if true
-        StudentEnrolment newEnrol = createEnrolment(newStudentId, newCourseId, newSemester);
-        if (newEnrol == null) return false;
-
         ListIterator listIterator = listOfEnrolments.listIterator();
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
             if (currentEnrol.checkEqual(oldStudentId, oldCourseId, oldSemester)){
-                ArrayList<StudentEnrolment> allEnrolStudent = findStudent(oldStudentId).getAllEnrolments();
-                ArrayList<StudentEnrolment> allEnrolCourse  = findCourse(oldCourseId).getAllEnrolments();
-                allEnrolStudent.set(allEnrolStudent.indexOf(currentEnrol), newEnrol);
-                allEnrolCourse.set(allEnrolCourse.indexOf(currentEnrol), newEnrol);
-                listIterator.set(newEnrol);
+                StudentEnrolment newEnrol = createEnrolment(newStudentId, newCourseId, newSemester);
+                if (newEnrol == null) return false;
+                if (!add(newStudentId, newCourseId, newSemester)) return false;
+                delete(oldStudentId, oldCourseId, oldSemester);
+                return true;
             }
         }
 
@@ -160,17 +157,16 @@ public class ProgramManager implements StudentEnrolmentManager{
     //Screens for program flow
     public void start(){
         Scanner input = new Scanner(System.in);
-        FileManager fileManager = new FileManager();
         System.out.println("This is the Student enrolment manager.");
         System.out.print("Enter source file for importing:");
 
-        String filename = input.nextLine();
-        if (fileManager.processFile(filename, listOfEnrolments, listOfStudents, listOfCourses)){
+        String filename = input.nextLine().trim();
+        if (FileManager.processFile(filename, listOfEnrolments, listOfStudents, listOfCourses)){
             System.out.println("file " + filename + " is imported successfully");
         } else {
             //reset all the lists to fix the current broken lists populated with broken data
             resetList();
-            if(fileManager.processFile("default.csv", listOfEnrolments, listOfStudents, listOfCourses)){
+            if(FileManager.processFile("default.csv", listOfEnrolments, listOfStudents, listOfCourses)){
                 System.out.println("Failed to import external file, use default.csv file instead.");
             } else {
                 System.out.println("Default file cannot be imported.");
@@ -283,7 +279,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             System.out.println("Success: Enrolment for " + oldStudentId + " for course "
                     + oldCourseId + " for semester " + oldSemester + " has been updated.");
         } else {
-            System.out.println("Failure: Update failed, course may not exist or new course add is wrong");
+            System.out.println("Failure: Update failed, old enrolment does not exist or new enrolment is invalid (already exist or plain wrong");
         }
 
         crudEnrolMainScreen();
@@ -337,8 +333,14 @@ public class ProgramManager implements StudentEnrolmentManager{
                 int choice = Input.getInputNav(2);
 
                 switch(choice){
-                    case 1: deleteWithCourse(studentId, semester); break;
-                    case 2: updateWithCourse(studentId, semester); break;
+                    case 1:
+                        if(deleteWithCourse(studentId, semester)) System.out.println("Enrolment deleted");
+                        else System.out.println("Deletion fail");
+                        break;
+                    case 2:
+                        if(updateWithCourse(studentId, semester)) System.out.println("Enrolment updated");
+                        else System.out.println("Update fail");
+                        break;
                     default: stopCommand = true; break;
                 }
 
@@ -383,7 +385,6 @@ public class ProgramManager implements StudentEnrolmentManager{
             System.out.println("All courses found: ");
             ArrayList<StudentEnrolment> allStudentEnrolment = student.getAllEnrolments();
             allStudentEnrolment.forEach((enrol) -> {
-                System.out.println("Course: " + enrol.getCourse());
                 if (enrol.getSemester().equals(semester)) System.out.println("Course found: " + enrol.getCourse());
             });
         }
@@ -434,8 +435,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         System.out.println("Export to csv file menu");
         String filename = Input.getFilename();
 
-        FileManager fileManager = new FileManager();
-        if (fileManager.createFile(filename, listOfEnrolments)) System.out.println("file created.");
+        if (FileManager.createFile(filename, listOfEnrolments)) System.out.println("file created.");
 
         mainMenuScreen();
     }

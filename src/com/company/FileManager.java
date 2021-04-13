@@ -8,30 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FileManager {
-    //testing
-    public static void main(String[] args){
-        FileManager fileManager = new FileManager();
-        ArrayList<StudentEnrolment> listOfEnrolments = new ArrayList<>();
-        HashSet<Student> listOfStudents = new HashSet<>();
-        HashSet<Course> listOfCourses = new HashSet<>();
-        fileManager.processFile("default.csv", listOfEnrolments, listOfStudents, listOfCourses);
-
-        listOfEnrolments.forEach((enrol) -> {
-            System.out.println(enrol);
-        });
-
-        listOfStudents.forEach((student) -> {
-            System.out.println(student);
-        });
-
-        listOfCourses.forEach((course) -> {
-            System.out.println(course);
-        });
-    }
-
-    //public methods for usage
-    //////////////////////////
-    public boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments,
+    public static boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments,
                                HashSet<Student> listOfStudents, HashSet<Course> listOfCourses){
         try{
             Scanner inputLine = new Scanner(new File(filename));
@@ -60,12 +37,14 @@ public class FileManager {
             System.out.println("File problem: File cannot be read.");
         } catch (ParseException ex){
             System.out.println("File problem: Date format not supported or file corrupted.");
+        } catch (NoSuchElementException ex){
+            System.out.println("File problem: file corrupted, some data has been missing.");
         }
 
         return false;
     }
 
-    public boolean createFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments){
+    public static boolean createFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments){
         try {
             PrintWriter output = new PrintWriter(filename + ".csv");
 
@@ -76,7 +55,9 @@ public class FileManager {
 
                 //process all information of the course
                 Course course = enrol.getCourse();
-                output.println(course.getId() + "," + course.getName() + "," + course.getNumberOfCredits());
+                output.print(course.getId() + "," + course.getName() + "," + course.getNumberOfCredits() + ",");
+
+                output.println(enrol.getSemester());
             });
 
             output.close();
@@ -90,7 +71,8 @@ public class FileManager {
 
 
     //////////////////////////
-    private Student getStudentFromFile(Scanner input, HashSet<Student> listOfStudents) throws ParseException{
+    //private methods
+    private static Student getStudentFromFile(Scanner input, HashSet<Student> listOfStudents) throws ParseException{
         String id = input.next();
         String name = input.next();
         String dateUnFormatted = input.next();
@@ -107,7 +89,7 @@ public class FileManager {
         return new Student(id, name, dateFormatted);
     }
 
-    private Course getCourseFromFile(Scanner input, HashSet<Course> listOfCourses){
+    private static Course getCourseFromFile(Scanner input, HashSet<Course> listOfCourses){
         String id = input.next();
         String name = input.next();
         int credit = input.nextInt();
@@ -118,7 +100,7 @@ public class FileManager {
         return new Course(id, name, credit);
     }
 
-    private Student findStudent(String studentId, HashSet<Student> listOfStudents){
+    private static Student findStudent(String studentId, HashSet<Student> listOfStudents){
         Iterator iterator = listOfStudents.iterator();
         while (iterator.hasNext()){
             Student student = (Student) iterator.next();
@@ -128,7 +110,7 @@ public class FileManager {
         return null;
     }
 
-    private Course findCourse(String courseId, HashSet<Course> listOfCourses){
+    private static Course findCourse(String courseId, HashSet<Course> listOfCourses){
         Iterator iterator = listOfCourses.iterator();
         while (iterator.hasNext()){
             Course course = (Course) iterator.next();
