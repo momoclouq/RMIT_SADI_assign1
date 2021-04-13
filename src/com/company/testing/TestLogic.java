@@ -50,34 +50,5 @@ public class TestLogic {
         assertFalse(enrol.checkEqual("S1235", "COSC1234", "2021A"));
         assertFalse(enrol.checkEqual("asdcdsc", "casdcd", "casdcd"));
     }
-
-    //tests for core Manager functions
-    @Test
-    public void testAdd(){
-        System.out.println("Test Add enrolment");
-
-
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testCubeInvalidFormat() {
-        System.out.println("Test Cube Exception");
-        Integer a = null;
-//        obj.cube(a);
-    }
-
-    @Test
-    public void testGetInput() {
-        System.out.println("Test getInput");
-        ByteArrayInputStream in = new ByteArrayInputStream("My string".getBytes());
-        System.setIn(in);
-//        assertEquals("My string", obj.getInput());
-//        in = new ByteArrayInputStream("My string1".getBytes());
-//        System.setIn(in);
-//        assertEquals("My string1", obj.getInput());
-
-        // optionally, reset to its original
-//        System.setIn(sysInBackup);
-    }
 }
 

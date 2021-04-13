@@ -19,6 +19,14 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     //core methods (CRUD functions for enrolment)
+
+    /**
+     *
+     * @param studentId
+     * @param courseId
+     * @param semester
+     * @return true if the addition
+     */
     @Override
     public boolean add(String studentId, String courseId, String semester) {
         //try find the enrolment with data provided
@@ -156,6 +164,7 @@ public class ProgramManager implements StudentEnrolmentManager{
     }
 
     private void fewFirstWords(){
+        System.out.println("Enter the digit \"1\", \"2\", etc only to choose the option");
         System.out.println("Enter \"-1\" to end the program.");
         System.out.println("Enter \"0\" to return to the main menu.");
         System.out.println("");
