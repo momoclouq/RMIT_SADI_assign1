@@ -1,4 +1,4 @@
-package com.company;
+package com.company.IO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

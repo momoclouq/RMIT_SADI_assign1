@@ -1,4 +1,9 @@
-package com.company;
+package com.company.IO;
+
+import com.company.Helper;
+import com.company.model.Course;
+import com.company.model.Student;
+import com.company.model.StudentEnrolment;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +14,7 @@ import java.util.*;
 
 public class FileManager {
     public static boolean processFile(String filename, ArrayList<StudentEnrolment> listOfEnrolments,
-                               HashSet<Student> listOfStudents, HashSet<Course> listOfCourses){
+                                      HashSet<Student> listOfStudents, HashSet<Course> listOfCourses){
         try{
             Scanner inputLine = new Scanner(new File(filename));
 

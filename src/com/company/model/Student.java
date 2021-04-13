@@ -1,17 +1,20 @@
-package com.company;
+package com.company.model;
+
+import com.company.Helper;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
-public class Course {
+public class Student {
     private String id;
     private String name;
-    private int numberOfCredits;
+    private Calendar birthdate;
     private ArrayList<StudentEnrolment> allEnrolments;
 
-    public Course(String id, String name, int numberOfCredits){
+    public Student(String id, String name, Calendar birthdate) {
         this.id = id;
         this.name = name;
-        this.numberOfCredits = numberOfCredits;
+        this.birthdate = birthdate;
         this.allEnrolments = new ArrayList<>();
     }
 
@@ -24,8 +27,8 @@ public class Course {
         return name;
     }
 
-    public int getNumberOfCredits() {
-        return numberOfCredits;
+    public Calendar getBirthdate() {
+        return birthdate;
     }
 
     public ArrayList<StudentEnrolment> getAllEnrolments(){
@@ -34,6 +37,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course: " + this.id + ", " +this.name + ", " +this.numberOfCredits;
+        return "(" + this.id + ", " + this.name + ", " + Helper.getProperTime(this.birthdate) + ") ";
     }
 }

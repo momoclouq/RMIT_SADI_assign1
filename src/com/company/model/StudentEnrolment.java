@@ -1,4 +1,7 @@
-package com.company;
+package com.company.model;
+
+import com.company.model.Course;
+import com.company.model.Student;
 
 public class StudentEnrolment {
     private Student student;

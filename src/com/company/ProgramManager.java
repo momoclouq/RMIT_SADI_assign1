@@ -1,6 +1,11 @@
 package com.company;
 
-import java.io.File;
+import com.company.IO.FileManager;
+import com.company.IO.Input;
+import com.company.model.Course;
+import com.company.model.Student;
+import com.company.model.StudentEnrolment;
+
 import java.util.*;
 
 public class ProgramManager implements StudentEnrolmentManager{
@@ -9,21 +14,26 @@ public class ProgramManager implements StudentEnrolmentManager{
     private HashSet<Course> listOfCourses;
 
     public ProgramManager(){
-        //initialize the manager
+        //initialize the list of enrolments, the list of Student and the list of courses
         resetList();
     }
 
-    //core methods
+    //core methods (CRUD functions for enrolment)
     @Override
     public boolean add(String studentId, String courseId, String semester) {
-        //find the enrolment with data provided
+        //try find the enrolment with data provided
         StudentEnrolment tempEnrol = getOne(studentId, courseId, semester);
 
+        //if we could not find the enrolment in the list
         if (tempEnrol == null){
             StudentEnrolment output = createEnrolment(studentId, courseId, semester);
+
+            //if we can create an enrolment with the data provided
             if (output != null) {
                 Student student = findStudent(studentId);
                 Course course = findCourse(courseId);
+
+                //add the enrolment to the list of all enrolments, the list of enrolment related to the Student and the Course
                 listOfEnrolments.add(output);
                 student.getAllEnrolments().add(output);
                 course.getAllEnrolments().add(output);
@@ -40,9 +50,14 @@ public class ProgramManager implements StudentEnrolmentManager{
         ListIterator listIterator = listOfEnrolments.listIterator();
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
+
             if (currentEnrol.checkEqual(oldStudentId, oldCourseId, oldSemester)){
                 StudentEnrolment newEnrol = createEnrolment(newStudentId, newCourseId, newSemester);
+
+                //check if the we can create the enrolment with the data
                 if (newEnrol == null) return false;
+
+                //check if we can add the new enrolment to the data or not, if not then stop the operation
                 if (!add(newStudentId, newCourseId, newSemester)) return false;
                 delete(oldStudentId, oldCourseId, oldSemester);
                 return true;
@@ -54,13 +69,17 @@ public class ProgramManager implements StudentEnrolmentManager{
 
     @Override
     public boolean delete(String studentId, String courseId, String semester) {
-        //check if enrol already exist and replace it with the new enrolment if true
+        //check if enrol already exists
         ListIterator listIterator = listOfEnrolments.listIterator();
         while (listIterator.hasNext()){
             StudentEnrolment currentEnrol = (StudentEnrolment) listIterator.next();
+
             if (currentEnrol.checkEqual(studentId, courseId, semester)){
+                //find the student and course related to the data provided
                 Student student = findStudent(studentId);
                 Course course = findCourse(courseId);
+
+                //remove the enrolment from all of the related lists
                 student.getAllEnrolments().remove(currentEnrol);
                 course.getAllEnrolments().remove(currentEnrol);
                 listIterator.remove();
@@ -76,6 +95,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         Iterator iterator = listOfEnrolments.iterator();
         while(iterator.hasNext()){
             StudentEnrolment enrol = (StudentEnrolment) iterator.next();
+
             if (enrol.checkEqual(studentId, courseId, semester))
                 return enrol;
         }
@@ -88,11 +108,18 @@ public class ProgramManager implements StudentEnrolmentManager{
         return listOfEnrolments;
     }
 
-    //core minor methods
+    //minor methods used in the core functions
+    private void resetList(){
+        this.listOfEnrolments = new ArrayList<>();
+        this.listOfCourses = new HashSet<>();
+        this.listOfStudents = new HashSet<>();
+    }
+
     private Student findStudent(String studentId){
         Iterator iterator = listOfStudents.iterator();
         while (iterator.hasNext()){
             Student student = (Student) iterator.next();
+
             if (student.getId().equals(studentId)) return student;
         }
 
@@ -103,6 +130,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         Iterator iterator = listOfCourses.iterator();
         while (iterator.hasNext()){
             Course course = (Course) iterator.next();
+
             if (course.getId().equals(courseId)) return course;
         }
 
@@ -113,6 +141,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         Student student = findStudent(studentId);
         Course course = findCourse(courseId);
 
+        //only return a new enrolment if we can find the student and the course
         if (student != null && course != null){
             return new StudentEnrolment(student, course, semester);
         }
@@ -120,13 +149,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         return null;
     }
 
-    //sub functions
-    private void resetList(){
-        this.listOfEnrolments = new ArrayList<>();
-        this.listOfCourses = new HashSet<>();
-        this.listOfStudents = new HashSet<>();
-    }
-
+    //sub functions for the user interaction and ease of usage
     private void line(){
         System.out.println("");
         System.out.println("--------------------------------------");
@@ -217,6 +240,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         System.out.println("2. update an enrolment. ");
         System.out.println("3. delete an enrolment. ");
 
+        //getting the input
         int userChoice = Input.getInputNav(3);
 
         //navigation
@@ -234,15 +258,19 @@ public class ProgramManager implements StudentEnrolmentManager{
         line();
         System.out.println("Add a new enrolment menu.");
         System.out.println("Please enter all valid enrolment information.");
+
+        //getting the input
         String studentId = Input.getStudentId();
         String courseId = Input.getCourseId();
         String semester = Input.getSemester();
 
+        //core function usage
         if(add(studentId, courseId, semester))
             System.out.println("Success: " + studentId + " has enrolled for course "
                     + courseId + " for semester " + semester);
         else System.out.println("Failure: enrolment cannot be created");
 
+        //navigation
         crudEnrolMainScreen();
     }
 
@@ -254,11 +282,13 @@ public class ProgramManager implements StudentEnrolmentManager{
         String courseId = Input.getCourseId();
         String semester = Input.getSemester();
 
+        //core function usage
         if (delete(studentId, courseId, semester))
             System.out.println("Success: Enrolment for " + studentId + " for course "
                     + courseId + " for semester " + semester + " has been deleted.");
         else System.out.println("Failure: enrolment does not exist for deleting");
 
+        //navigation
         crudEnrolMainScreen();
     }
 
@@ -275,13 +305,16 @@ public class ProgramManager implements StudentEnrolmentManager{
         String newCourseId = Input.getCourseId();
         String newSemester = Input.getSemester();
 
+        //core function usage
         if (update(oldStudentId, oldCourseId, oldSemester, newStudentId, newCourseId, newSemester)){
             System.out.println("Success: Enrolment for " + oldStudentId + " for course "
                     + oldCourseId + " for semester " + oldSemester + " has been updated.");
         } else {
-            System.out.println("Failure: Update failed, old enrolment does not exist or new enrolment is invalid (already exist or plain wrong");
+            System.out.println("Failure: Update failed, old enrolment does not exist or new enrolment is " +
+                    "invalid (already exist or plain wrong");
         }
 
+        //navigation
         crudEnrolMainScreen();
     }
 
@@ -294,6 +327,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         ArrayList<String> listOfCourseIds = Input.getMultipleCourseId();
         String semester = Input.getSemester();
 
+        //core function usage
         System.out.println("Processing!");
         listOfStudentIds.forEach((studentId) -> {
             listOfCourseIds.forEach((courseId) -> {
@@ -303,7 +337,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         });
         System.out.println("All enrolled");
 
-
+        //navigation
         mainMenuScreen();
     }
 
@@ -316,6 +350,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         String semester = Input.getSemester();
         Student student = findStudent(studentId);
 
+        //core function usage
         if (student == null){
             System.out.println("student does not exist");
         } else {
@@ -348,6 +383,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             }
         }
 
+        //navigation
         mainMenuScreen();
     }
 
@@ -379,6 +415,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         String studentId = Input.getStudentId();
         String semester = Input.getSemester();
 
+        //core function usage
         Student student = findStudent(studentId);
         if (student == null) System.out.println("Student does not exist");
         else {
@@ -389,6 +426,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             });
         }
 
+        //navigation
         printMainScreen();
     }
 
@@ -399,6 +437,7 @@ public class ProgramManager implements StudentEnrolmentManager{
         String courseId = Input.getCourseId();
         String semester = Input.getSemester();
 
+        //core function usage
         Course course = findCourse(courseId);
         if (course == null) System.out.println("Course does not exist");
         else {
@@ -408,6 +447,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             });
         }
 
+        //navigation
         printMainScreen();
     }
 
@@ -417,6 +457,7 @@ public class ProgramManager implements StudentEnrolmentManager{
 
         String semester = Input.getSemester();
 
+        //core function usage
         HashSet<Course> coursesOffered = new HashSet<>();
         listOfEnrolments.forEach((enrol) -> {
             if (enrol.getSemester().equals(semester)) coursesOffered.add(enrol.getCourse());
@@ -427,6 +468,7 @@ public class ProgramManager implements StudentEnrolmentManager{
             System.out.println("Course found: " + course);
         });
 
+        //navigation
         printMainScreen();
     }
 
@@ -435,8 +477,10 @@ public class ProgramManager implements StudentEnrolmentManager{
         System.out.println("Export to csv file menu");
         String filename = Input.getFilename();
 
+        //core function usage
         if (FileManager.createFile(filename, listOfEnrolments)) System.out.println("file created.");
 
+        //navigation
         mainMenuScreen();
     }
 }

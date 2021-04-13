@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.model.StudentEnrolment;
+
 import java.util.ArrayList;
 
 public interface StudentEnrolmentManager {
